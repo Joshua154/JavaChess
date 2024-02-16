@@ -7,6 +7,7 @@ import de.jonas.util.TeamColor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Knight extends ChessPiece {
     private ImageTheme theme;
@@ -46,7 +47,7 @@ public class Knight extends ChessPiece {
             locationsList.add(location);
         }
 
-        return locationsList.stream().filter(location -> isLocationValid(chessBoard, location)).toList();
+        return locationsList.stream().filter(location -> isLocationValid(chessBoard, location)).collect(Collectors.toList());
     }
 
     @Override

@@ -7,6 +7,7 @@ import de.jonas.util.Location;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Pawn extends ChessPiece {
     private boolean hasMoved = false;
@@ -51,7 +52,7 @@ public class Pawn extends ChessPiece {
         }
 
 // Filter out invalid locations
-        return locationsList.stream().filter(location -> isLocationValid(chessBoard, location)).toList();
+        return locationsList.stream().filter(location -> isLocationValid(chessBoard, location)).collect(Collectors.toList());
     }
 
     @Override

@@ -218,7 +218,7 @@ public class ChessBoard extends JPanel {
         this.bottomColor = bottomColor;
 
         // set upper side
-//        board[0][0] = new Rook(theme, bottomColor.getOpposite(), this);
+        board[0][0] = new Rook(theme, bottomColor.getOpposite(), this);
         board[0][1] = new Knight(theme, bottomColor.getOpposite(), this);
         board[0][2] = new Bishop(theme, bottomColor.getOpposite(), this);
         board[0][3] = new Queen(theme, bottomColor.getOpposite(), this);
@@ -257,8 +257,6 @@ public class ChessBoard extends JPanel {
         board[6][5] = new Pawn(theme, bottomColor, this);
         board[6][6] = new Pawn(theme, bottomColor, this);
         board[6][7] = new Pawn(theme, bottomColor, this);
-
-        board[1][0] = new Pawn(theme, bottomColor, this);
     }
 
     // Method to refresh the board view
