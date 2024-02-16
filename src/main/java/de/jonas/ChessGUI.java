@@ -26,14 +26,12 @@ public class ChessGUI {
 
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.setPreferredSize(new Dimension(200, 400));
 
-        JPanel themePanel = new JPanel();
-        themePanel.setLayout(new BoxLayout(themePanel, BoxLayout.Y_AXIS));
-        themePanel.add(new JLabel("Select a theme:"));
-
-        JScrollPane themeScrollPane = new JScrollPane();
-        themeScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        themeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        // Create the JPanel that will contain the buttons
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setName("Select a theme:");
+        buttonPanel.setLayout(new GridLayout(1, 0));
 
         for (ImageTheme theme : ImageTheme.values()) {
             JButton themeButton = new JButton(theme.getThemeName());
@@ -41,8 +39,14 @@ public class ChessGUI {
                 this.theme = theme;
                 chessBoard.setTheme(theme);
             });
-            themePanel.add(themeButton);
+            buttonPanel.add(themeButton);
         }
+
+        // Create the JScrollPane that will contain the JPanel
+        JScrollPane themeSelectButtons = new JScrollPane(buttonPanel,
+                JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        themeSelectButtons.setPreferredSize(new Dimension(200, 100));
 
 
         // Player info panels
@@ -50,7 +54,7 @@ public class ChessGUI {
         player1InfoPanel.updateTurn(true);
         player2InfoPanel = new PlayerInfoPanel("Black");
 
-        leftPanel.add(themePanel);
+        leftPanel.add(themeSelectButtons);
         leftPanel.add(player1InfoPanel);
         leftPanel.add(player2InfoPanel);
 
