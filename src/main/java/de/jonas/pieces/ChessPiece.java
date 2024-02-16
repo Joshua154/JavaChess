@@ -14,9 +14,11 @@ import java.util.List;
 public abstract class ChessPiece {
     private Image image;
     private TeamColor teamColor;
+    protected ChessBoard chessBoard;
 
-    public ChessPiece(TeamColor teamColor) {
+    public ChessPiece(TeamColor teamColor, ChessBoard chessBoard) {
         this.teamColor = teamColor;
+        this.chessBoard = chessBoard;
     }
 
     protected void loadImage(ImageTheme theme, TeamColor color) {

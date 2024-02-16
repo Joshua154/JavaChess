@@ -12,8 +12,8 @@ public class Rook extends ChessPiece {
     private ImageTheme theme;
     private boolean hasMoved = false;
 
-    public Rook(ImageTheme theme, TeamColor teamColor) {
-        super(teamColor);
+    public Rook(ImageTheme theme, TeamColor teamColor, ChessBoard chessBoard) {
+        super(teamColor, chessBoard);
         this.theme = theme;
 
         this.loadImage(theme, teamColor);

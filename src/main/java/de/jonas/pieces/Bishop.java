@@ -11,8 +11,8 @@ import java.util.List;
 public class Bishop extends ChessPiece {
     private ImageTheme theme;
 
-    public Bishop(ImageTheme theme, TeamColor teamColor) {
-        super(teamColor);
+    public Bishop(ImageTheme theme, TeamColor teamColor, ChessBoard chessBoard) {
+        super(teamColor, chessBoard);
         this.theme = theme;
 
         this.loadImage(theme, teamColor);

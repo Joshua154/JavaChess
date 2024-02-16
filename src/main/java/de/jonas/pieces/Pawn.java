@@ -12,8 +12,8 @@ public class Pawn extends ChessPiece {
     private boolean hasMoved = false;
     private ImageTheme theme;
 
-    public Pawn(ImageTheme theme, TeamColor teamColor) {
-        super(teamColor);
+    public Pawn(ImageTheme theme, TeamColor teamColor, ChessBoard chessBoard) {
+        super(teamColor, chessBoard);
         this.theme = theme;
 
         this.loadImage(theme, teamColor);
@@ -62,6 +62,9 @@ public class Pawn extends ChessPiece {
     @Override
     public void movedTo(Location newLocation) {
         hasMoved = true;
+        if (newLocation.getRow() == 0 || newLocation.getRow() == 7) {
+            this.chessBoard.getBoard()[newLocation.getColumn()][newLocation.getRow()] = new Queen(this.theme, this.getColor(), this.chessBoard);
+        }
     }
 
     @Override

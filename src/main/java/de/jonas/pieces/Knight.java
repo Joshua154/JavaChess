@@ -11,8 +11,8 @@ import java.util.List;
 public class Knight extends ChessPiece {
     private ImageTheme theme;
 
-    public Knight(ImageTheme theme, TeamColor teamColor) {
-        super(teamColor);
+    public Knight(ImageTheme theme, TeamColor teamColor, ChessBoard chessBoard) {
+        super(teamColor, chessBoard);
         this.theme = theme;
 
         this.loadImage(theme, teamColor);

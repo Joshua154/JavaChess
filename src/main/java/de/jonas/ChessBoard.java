@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.Objects;
 
 public class ChessBoard extends JPanel {
     private ChessPiece[][] board;
@@ -98,7 +99,6 @@ public class ChessBoard extends JPanel {
                         } else if (selectedPieceLocation != null && (selectedPieceLocation.getRow() != row || selectedPieceLocation.getColumn() != col)) {
                             Location moveTo = new Location(row, col);
                             if (possibleMoves != null && possibleMoves.contains(moveTo)) {
-                                selectedPiece.movedTo(moveTo);
                                 addMoveToHistory(selectedPiece.getPieceName() + " from " + selectedPieceLocation.toChessNotation() + " to " + moveTo.toChessNotation(), selectedPiece);
 
                                 if (board[row][col] != null) {
@@ -166,6 +166,9 @@ public class ChessBoard extends JPanel {
                                 playerWhiteInfoPanel.updateClock();
                                 playerBlackInfoPanel.updateTurn(currentTurn == TeamColor.BLACK);
                                 playerBlackInfoPanel.updateClock();
+
+
+                                selectedPiece.movedTo(moveTo);
                             }
                             else {
                                 deselectPiece();
@@ -191,6 +194,9 @@ public class ChessBoard extends JPanel {
     }
 
     private void colorSquare(JPanel square, int row, int col) {
+        if(selectedPieceLocation != null && board[row][col] != null && board[row][col].getPieceName().equals("king")) {
+            square.setBackground(new Color(120, 0, 0)); // Highlight King in check
+        }
         if (selectedPieceLocation != null && row == selectedPieceLocation.getRow() && col == selectedPieceLocation.getColumn()) {
             square.setBackground(Color.YELLOW); // Highlight the selected piece
         } else if (possibleMoves != null && possibleMoves.contains(new Location(row, col))) {
@@ -212,45 +218,47 @@ public class ChessBoard extends JPanel {
         this.bottomColor = bottomColor;
 
         // set upper side
-        board[0][0] = new Rook(theme, bottomColor.getOpposite());
-        board[0][1] = new Knight(theme, bottomColor.getOpposite());
-        board[0][2] = new Bishop(theme, bottomColor.getOpposite());
-        board[0][3] = new Queen(theme, bottomColor.getOpposite());
-        board[0][4] = new King(theme, bottomColor.getOpposite());
-        board[0][5] = new Bishop(theme, bottomColor.getOpposite());
-        board[0][6] = new Knight(theme, bottomColor.getOpposite());
-        board[0][7] = new Rook(theme, bottomColor.getOpposite());
+//        board[0][0] = new Rook(theme, bottomColor.getOpposite(), this);
+        board[0][1] = new Knight(theme, bottomColor.getOpposite(), this);
+        board[0][2] = new Bishop(theme, bottomColor.getOpposite(), this);
+        board[0][3] = new Queen(theme, bottomColor.getOpposite(), this);
+        board[0][4] = new King(theme, bottomColor.getOpposite(), this);
+        board[0][5] = new Bishop(theme, bottomColor.getOpposite(), this);
+        board[0][6] = new Knight(theme, bottomColor.getOpposite(), this);
+        board[0][7] = new Rook(theme, bottomColor.getOpposite(), this);
 
         // Set the pawns
-        board[1][0] = new Pawn(theme, bottomColor.getOpposite());
-        board[1][1] = new Pawn(theme, bottomColor.getOpposite());
-        board[1][2] = new Pawn(theme, bottomColor.getOpposite());
-        board[1][3] = new Pawn(theme, bottomColor.getOpposite());
-        board[1][4] = new Pawn(theme, bottomColor.getOpposite());
-        board[1][5] = new Pawn(theme, bottomColor.getOpposite());
-        board[1][6] = new Pawn(theme, bottomColor.getOpposite());
-        board[1][7] = new Pawn(theme, bottomColor.getOpposite());
+        board[1][0] = new Pawn(theme, bottomColor.getOpposite(), this);
+        board[1][1] = new Pawn(theme, bottomColor.getOpposite(), this);
+        board[1][2] = new Pawn(theme, bottomColor.getOpposite(), this);
+        board[1][3] = new Pawn(theme, bottomColor.getOpposite(), this);
+        board[1][4] = new Pawn(theme, bottomColor.getOpposite(), this);
+        board[1][5] = new Pawn(theme, bottomColor.getOpposite(), this);
+        board[1][6] = new Pawn(theme, bottomColor.getOpposite(), this);
+        board[1][7] = new Pawn(theme, bottomColor.getOpposite(), this);
 
 
         // set lower side
-        board[7][0] = new Rook(theme, bottomColor);
-        board[7][1] = new Knight(theme, bottomColor);
-        board[7][2] = new Bishop(theme, bottomColor);
-        board[7][3] = new Queen(theme, bottomColor);
-        board[7][4] = new King(theme, bottomColor);
-        board[7][5] = new Bishop(theme, bottomColor);
-        board[7][6] = new Knight(theme, bottomColor);
-        board[7][7] = new Rook(theme, bottomColor);
+        board[7][0] = new Rook(theme, bottomColor, this);
+        board[7][1] = new Knight(theme, bottomColor, this);
+        board[7][2] = new Bishop(theme, bottomColor, this);
+        board[7][3] = new Queen(theme, bottomColor, this);
+        board[7][4] = new King(theme, bottomColor, this);
+        board[7][5] = new Bishop(theme, bottomColor, this);
+        board[7][6] = new Knight(theme, bottomColor, this);
+        board[7][7] = new Rook(theme, bottomColor, this);
 
         // Set the pawns
-        board[6][0] = new Pawn(theme, bottomColor);
-        board[6][1] = new Pawn(theme, bottomColor);
-        board[6][2] = new Pawn(theme, bottomColor);
-        board[6][3] = new Pawn(theme, bottomColor);
-        board[6][4] = new Pawn(theme, bottomColor);
-        board[6][5] = new Pawn(theme, bottomColor);
-        board[6][6] = new Pawn(theme, bottomColor);
-        board[6][7] = new Pawn(theme, bottomColor);
+        board[6][0] = new Pawn(theme, bottomColor, this);
+        board[6][1] = new Pawn(theme, bottomColor, this);
+        board[6][2] = new Pawn(theme, bottomColor, this);
+        board[6][3] = new Pawn(theme, bottomColor, this);
+        board[6][4] = new Pawn(theme, bottomColor, this);
+        board[6][5] = new Pawn(theme, bottomColor, this);
+        board[6][6] = new Pawn(theme, bottomColor, this);
+        board[6][7] = new Pawn(theme, bottomColor, this);
+
+        board[1][0] = new Pawn(theme, bottomColor, this);
     }
 
     // Method to refresh the board view

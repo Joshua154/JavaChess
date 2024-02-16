@@ -11,8 +11,8 @@ import java.util.List;
 public class Queen extends ChessPiece {
     private ImageTheme theme;
 
-    public Queen(ImageTheme theme, TeamColor teamColor) {
-        super(teamColor);
+    public Queen(ImageTheme theme, TeamColor teamColor, ChessBoard chessBoard) {
+        super(teamColor, chessBoard);
         this.theme = theme;
 
         this.loadImage(theme, teamColor);
