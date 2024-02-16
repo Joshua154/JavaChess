@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 public class Pawn extends ChessPiece {
     private boolean hasMoved = false;
-    private ImageTheme theme;
 
     public Pawn(ImageTheme theme, TeamColor teamColor, ChessBoard chessBoard) {
         super(teamColor, chessBoard);

@@ -26,15 +26,17 @@ public class ChessBoard extends JPanel {
     private PlayerInfoPanel playerBlackInfoPanel;
     private boolean isRunning = true;
     private int moveCount = 0;
+    private ImageTheme theme;
 
     private int playerWhitePoints = 0;
     private int playerBlackPoints = 0;
 
-    public ChessBoard(ChessPiece[][] board, PlayerInfoPanel playerWhiteInfoPanel, PlayerInfoPanel playerBlackInfoPanel) {
+    public ChessBoard(ChessPiece[][] board, PlayerInfoPanel playerWhiteInfoPanel, PlayerInfoPanel playerBlackInfoPanel, ImageTheme theme) {
+        this.theme = theme;
         this.playerWhiteInfoPanel = playerWhiteInfoPanel;
         this.playerBlackInfoPanel = playerBlackInfoPanel;
         this.board = board;
-        setDefaultBoard(ImageTheme.CHESS_COM, TeamColor.WHITE);
+        setDefaultBoard(theme, TeamColor.WHITE);
 
         setLayout(new BorderLayout());
         addRanksAndFiles();
@@ -287,5 +289,23 @@ public class ChessBoard extends JPanel {
         if(moveHistoryModel != null) {
             this.moveHistoryModel.addElement(new MoveHistoryEntry(description, piece));
         }
+    }
+
+    public void reloadAllPictures() {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] != null) {
+                    ChessPiece piece = board[i][j];
+                    piece.setTheme(theme);
+                    piece.reloadImage();
+                }
+            }
+        }
+        updateBoard();
+    }
+
+    public void setTheme(ImageTheme theme) {
+        this.theme = theme;
+        reloadAllPictures();
     }
 }

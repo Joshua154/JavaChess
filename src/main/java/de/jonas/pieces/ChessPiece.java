@@ -15,6 +15,7 @@ public abstract class ChessPiece {
     private Image image;
     private TeamColor teamColor;
     protected ChessBoard chessBoard;
+    protected ImageTheme theme;
 
     public ChessPiece(TeamColor teamColor, ChessBoard chessBoard) {
         this.teamColor = teamColor;
@@ -46,4 +47,10 @@ public abstract class ChessPiece {
         return this.teamColor == teamColor;
     }
     public abstract int getValue();
+    public void reloadImage() {
+        this.loadImage(this.theme, teamColor);
+    }
+    public void setTheme(ImageTheme theme) {
+        this.theme = theme;
+    }
 }

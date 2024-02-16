@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Rook extends ChessPiece {
-    private ImageTheme theme;
     private boolean hasMoved = false;
 
     public Rook(ImageTheme theme, TeamColor teamColor, ChessBoard chessBoard) {

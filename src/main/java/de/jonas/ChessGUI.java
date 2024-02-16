@@ -1,6 +1,7 @@
 package de.jonas;
 
 import de.jonas.pieces.ChessPiece;
+import de.jonas.util.ImageTheme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,12 +10,10 @@ public class ChessGUI {
     private DefaultListModel<MoveHistoryEntry> moveHistoryModel;
     private JList<MoveHistoryEntry> moveHistoryList;
     private JFrame frame;
-    private Timer chessTimer;
-    private JLabel timerLabel;
     private PlayerInfoPanel player1InfoPanel;
     private PlayerInfoPanel player2InfoPanel;
-    private int elapsedTime = 0; // Track elapsed time in seconds
-    private boolean isRunning = false;
+    private ImageTheme theme = ImageTheme.values()[0];
+    private ChessBoard chessBoard;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new ChessGUI()::createAndShowGUI);
@@ -28,18 +27,30 @@ public class ChessGUI {
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
-        // Timer setup
-        timerLabel = new JLabel("00:00:00", SwingConstants.CENTER);
-        JButton startButton = new JButton("Start");
-        JButton pauseButton = new JButton("Pause");
-        JButton resetButton = new JButton("Reset");
+        JPanel themePanel = new JPanel();
+        themePanel.setLayout(new BoxLayout(themePanel, BoxLayout.Y_AXIS));
+        themePanel.add(new JLabel("Select a theme:"));
+
+        JScrollPane themeScrollPane = new JScrollPane();
+        themeScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        themeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+
+        for (ImageTheme theme : ImageTheme.values()) {
+            JButton themeButton = new JButton(theme.getThemeName());
+            themeButton.addActionListener(e -> {
+                this.theme = theme;
+                chessBoard.setTheme(theme);
+            });
+            themePanel.add(themeButton);
+        }
+
 
         // Player info panels
         player1InfoPanel = new PlayerInfoPanel("White");
         player1InfoPanel.updateTurn(true);
         player2InfoPanel = new PlayerInfoPanel("Black");
 
-
+        leftPanel.add(themePanel);
         leftPanel.add(player1InfoPanel);
         leftPanel.add(player2InfoPanel);
 
@@ -49,7 +60,7 @@ public class ChessGUI {
         // Initialize your chess board with pieces here
         ChessPiece[][] board = new ChessPiece[8][8];
 
-        ChessBoard chessBoard = new ChessBoard(board, player1InfoPanel, player2InfoPanel);
+        this.chessBoard = new ChessBoard(board, player1InfoPanel, player2InfoPanel, theme);
         frame.add(chessBoard, BorderLayout.CENTER);
 
         // Create the move history list

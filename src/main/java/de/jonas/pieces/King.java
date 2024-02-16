@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class King extends ChessPiece {
-    private ImageTheme theme;
     private boolean hasMoved = false;
 
     public King(ImageTheme theme, TeamColor teamColor, ChessBoard chessBoard) {

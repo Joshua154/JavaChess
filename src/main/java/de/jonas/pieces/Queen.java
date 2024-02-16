@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Queen extends ChessPiece {
-    private ImageTheme theme;
-
     public Queen(ImageTheme theme, TeamColor teamColor, ChessBoard chessBoard) {
         super(teamColor, chessBoard);
         this.theme = theme;
