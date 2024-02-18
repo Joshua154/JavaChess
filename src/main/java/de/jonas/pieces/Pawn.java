@@ -63,7 +63,7 @@ public class Pawn extends ChessPiece {
     public void movedTo(Location newLocation) {
         hasMoved = true;
         if (newLocation.getRow() == 0 || newLocation.getRow() == 7) {
-            this.chessBoard.getBoard()[newLocation.getColumn()][newLocation.getRow()] = new Queen(this.theme, this.getColor(), this.chessBoard);
+            this.chessBoard.getBoard()[newLocation.getRow()][newLocation.getColumn()] = new Queen(this.theme, this.getColor(), this.chessBoard);
         }
     }
 
