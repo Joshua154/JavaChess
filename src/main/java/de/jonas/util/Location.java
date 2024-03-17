@@ -17,16 +17,6 @@ public class Location {
         return row;
     }
 
-    public void setPos(int x, int y) {
-        this.column = y;
-        this.row = x;
-    }
-
-    public void setPos(Location loc) {
-        this.column = loc.getColumn();
-        this.row = loc.getRow();
-    }
-
     @Override
     public boolean equals(Object o) {
         if(!(o instanceof Location)) return false;
@@ -34,19 +24,7 @@ public class Location {
         return this.column == loc.getColumn() && this.row == loc.getRow();
     }
 
-    public boolean equals(int x, int y) {
-        return this.column == x && this.row == y;
-    }
-
     public String toString() {
         return "(" + row + ", " + column + ")";
-    }
-
-    public String toChessNotation() {
-        return "" + (char)('a' + column) + (char)('8' - row);
-    }
-
-    public static Location fromChessNotation(String notation) {
-        return new Location(notation.charAt(0) - 'a', '8' - notation.charAt(1));
     }
 }

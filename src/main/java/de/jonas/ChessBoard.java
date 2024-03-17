@@ -22,11 +22,7 @@ public class ChessBoard extends JPanel {
     private ChessBoard chessBoard = this;
     private TeamColor currentTurn = TeamColor.WHITE;
     private boolean isRunning = true;
-    private int moveCount = 0;
     private ImageTheme theme;
-
-    private int playerWhitePoints = 0;
-    private int playerBlackPoints = 0;
 
     public ChessBoard(ChessPiece[][] board, ImageTheme theme) {
         this.theme = theme;
@@ -43,23 +39,21 @@ public class ChessBoard extends JPanel {
         JPanel topPanel = new JPanel(new GridLayout(1, 8));
         JPanel leftPanel = new JPanel(new GridLayout(8, 1));
 
-        // Adding files (A-H) at the top
         for (char file = 'A'; file <= 'H'; file++) {
             topPanel.add(new JLabel(String.valueOf(file), SwingConstants.CENTER));
         }
 
-        // Adding ranks (1-8) on the left
         for (int rank = 8; rank >= 1; rank--) {
             leftPanel.add(new JLabel(String.valueOf(rank), SwingConstants.CENTER));
         }
 
         add(topPanel, BorderLayout.NORTH);
         add(leftPanel, BorderLayout.WEST);
-        add(boardGrid, BorderLayout.CENTER); // Chessboard grid is added in the center
+        add(boardGrid, BorderLayout.CENTER);
     }
 
     private void initializeBoard() {
-        boardGrid.removeAll(); // Clear the board grid before initializing
+        boardGrid.removeAll();
 
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
@@ -67,7 +61,7 @@ public class ChessBoard extends JPanel {
                 final int col = j;
                 JPanel square = new JPanel(new BorderLayout());
                 square.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                colorSquare(square, i, j); // Method to color the square
+                colorSquare(square, i, j);
 
                 JLabel pieceLabel = new JLabel();
                 if (board[i][j] != null) {
@@ -82,7 +76,6 @@ public class ChessBoard extends JPanel {
                             return;
                         }
                         if (selectedPieceLocation == null && board[row][col] != null) {
-                            // Select piece
                             selectedPieceLocation = new Location(row, col);
                             selectedPiece = board[row][col];
 
@@ -92,7 +85,7 @@ public class ChessBoard extends JPanel {
                                 return;
                             }
 
-                            possibleMoves = selectedPiece.getMoveLocations(chessBoard, selectedPieceLocation); // Get possible moves for the piece
+                            possibleMoves = selectedPiece.getMoveLocations(chessBoard, selectedPieceLocation);
                         } else if (selectedPieceLocation != null && (selectedPieceLocation.getRow() != row || selectedPieceLocation.getColumn() != col)) {
                             Location moveTo = new Location(row, col);
                             if (possibleMoves != null && possibleMoves.contains(moveTo)) {
@@ -109,7 +102,6 @@ public class ChessBoard extends JPanel {
                                 possibleMoves = null;
 
                                 currentTurn = currentTurn.getOpposite();
-                                moveCount++;
                                 selectedPiece.movedTo(moveTo);
                             }
                             else {
@@ -119,7 +111,7 @@ public class ChessBoard extends JPanel {
                         else {
                             deselectPiece();
                         }
-                        updateBoard(); // Refresh the board
+                        updateBoard();
                     }
                 });
 
@@ -129,7 +121,6 @@ public class ChessBoard extends JPanel {
     }
 
     private void deselectPiece() {
-        // Deselect piece
         selectedPieceLocation = null;
         selectedPiece = null;
         possibleMoves = null;
@@ -137,15 +128,15 @@ public class ChessBoard extends JPanel {
 
     private void colorSquare(JPanel square, int row, int col) {
         if(selectedPieceLocation != null && board[row][col] != null && board[row][col].getPieceName().equals("king")) {
-            square.setBackground(new Color(120, 0, 0)); // Highlight King in check
+            square.setBackground(new Color(120, 0, 0));
         }
         if (selectedPieceLocation != null && row == selectedPieceLocation.getRow() && col == selectedPieceLocation.getColumn()) {
-            square.setBackground(Color.YELLOW); // Highlight the selected piece
+            square.setBackground(Color.YELLOW);
         } else if (possibleMoves != null && possibleMoves.contains(new Location(row, col))) {
-            if(board[row][col] != null)
-                square.setBackground(Color.RED); // Highlight possible captures
-            else
-                square.setBackground(Color.GREEN); // Highlight possible moves
+            if(board[row][col] != null) {
+                square.setBackground(Color.RED);
+            } else
+                square.setBackground(Color.GREEN);
         } else {
             if ((row + col) % 2 == 0) {
                 square.setBackground(Color.WHITE);
@@ -210,18 +201,5 @@ public class ChessBoard extends JPanel {
 
     public TeamColor getBottomColor() {
         return bottomColor;
-    }
-
-    public void reloadAllPictures() {
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] != null) {
-                    ChessPiece piece = board[i][j];
-                    piece.setTheme(theme);
-                    piece.reloadImage();
-                }
-            }
-        }
-        updateBoard();
     }
 }

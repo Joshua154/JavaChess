@@ -26,31 +26,26 @@ public class Pawn extends ChessPiece {
 
         int direction = (getColor() == chessBoard.getBottomColor()) ? -1 : 1;
         int nextRow = currentLocation.getRow() + direction;
-        int column = currentLocation.getColumn(); // Assuming the correct method name is getColumn()
+        int column = currentLocation.getColumn();
 
-// move forward
         if (nextRow >= 0 && nextRow < board.length && board[nextRow][column] == null) {
             locationsList.add(new Location(nextRow, column));
-            // Double move for pawn that hasn't moved
             int twoStepsForward = nextRow + direction;
             if (!hasMoved && twoStepsForward >= 0 && twoStepsForward < board.length && board[twoStepsForward][column] == null) {
                 locationsList.add(new Location(twoStepsForward, column));
             }
         }
 
-// capture moves to the right
         if (column + 1 < board[0].length && board[nextRow][column + 1] != null &&
                 board[nextRow][column + 1].isInTeam(getColor().getOpposite())) {
             locationsList.add(new Location(nextRow, column + 1));
         }
 
-// capture moves to the left
         if (column - 1 >= 0 && board[nextRow][column - 1] != null &&
                 board[nextRow][column - 1].isInTeam(getColor().getOpposite())) {
             locationsList.add(new Location(nextRow, column - 1));
         }
 
-// Filter out invalid locations
         return locationsList.stream().filter(location -> isLocationValid(chessBoard, location)).collect(Collectors.toList());
     }
 

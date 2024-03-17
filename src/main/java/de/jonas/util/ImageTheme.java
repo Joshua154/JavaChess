@@ -10,25 +10,16 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public enum ImageTheme {
-    WIKIPEDIA("Wikipedia", "Wikipedia"),
-    SMOOTH("Smooth", "Smooth"),
-    THREE_D("3D", "3D"),
-    CHESS_COM("Chess_com", "Chess.com");
+    WIKIPEDIA("Wikipedia");
 
     private final String path;
-    private final String themeName;
 
-    ImageTheme(String path, String themeName) {
+    ImageTheme(String path) {
         this.path = path;
-        this.themeName = themeName;
     }
 
     public String getPath() {
         return path;
-    }
-
-    public String getThemeName() {
-        return themeName;
     }
 
     public Image getImage(ChessPiece chessPiece, TeamColor color) {

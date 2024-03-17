@@ -36,7 +36,7 @@ public class Queen extends ChessPiece {
             while (x >= 0 && x < board.length && y >= 0 && y < board[x].length) {
                 Location location = new Location(x, y);
 
-                if (!isLocationValid(chessBoard, location)) break; // Exit if location is invalid
+                if (!isLocationValid(chessBoard, location)) break;
                 if (board[x][y] != null) {
                     if (board[x][y].getColor() != getColor()) {
                         locationsList.add(location);
@@ -46,7 +46,6 @@ public class Queen extends ChessPiece {
 
                 locationsList.add(location);
 
-                // Move to the next cell in the direction
                 x += dx;
                 y += dy;
             }
