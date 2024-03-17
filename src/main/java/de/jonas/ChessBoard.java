@@ -18,12 +18,9 @@ public class ChessBoard extends JPanel {
     private ChessPiece selectedPiece = null;
     private TeamColor bottomColor;
     private List<Location> possibleMoves;
-    private DefaultListModel<MoveHistoryEntry> moveHistoryModel;
     private JPanel boardGrid = new JPanel(new GridLayout(8, 8));
     private ChessBoard chessBoard = this;
     private TeamColor currentTurn = TeamColor.WHITE;
-    private PlayerInfoPanel playerWhiteInfoPanel;
-    private PlayerInfoPanel playerBlackInfoPanel;
     private boolean isRunning = true;
     private int moveCount = 0;
     private ImageTheme theme;
@@ -31,10 +28,8 @@ public class ChessBoard extends JPanel {
     private int playerWhitePoints = 0;
     private int playerBlackPoints = 0;
 
-    public ChessBoard(ChessPiece[][] board, PlayerInfoPanel playerWhiteInfoPanel, PlayerInfoPanel playerBlackInfoPanel, ImageTheme theme) {
+    public ChessBoard(ChessPiece[][] board, ImageTheme theme) {
         this.theme = theme;
-        this.playerWhiteInfoPanel = playerWhiteInfoPanel;
-        this.playerBlackInfoPanel = playerBlackInfoPanel;
         this.board = board;
         setDefaultBoard(theme, TeamColor.WHITE);
 
@@ -101,41 +96,10 @@ public class ChessBoard extends JPanel {
                         } else if (selectedPieceLocation != null && (selectedPieceLocation.getRow() != row || selectedPieceLocation.getColumn() != col)) {
                             Location moveTo = new Location(row, col);
                             if (possibleMoves != null && possibleMoves.contains(moveTo)) {
-                                addMoveToHistory(selectedPiece.getPieceName() + " from " + selectedPieceLocation.toChessNotation() + " to " + moveTo.toChessNotation(), selectedPiece);
-
                                 if (board[row][col] != null) {
                                     ChessPiece piece = board[row][col];
                                     if(piece instanceof King) {
-                                        if(piece.getColor() == TeamColor.WHITE) {
-                                            playerBlackInfoPanel.setWinner(true);
-                                        }
-                                        else {
-                                            playerWhiteInfoPanel.setWinner(true);
-                                        }
                                         isRunning = false;
-                                        playerWhiteInfoPanel.pauseClock();
-                                        playerBlackInfoPanel.pauseClock();
-                                    }
-                                    else {
-                                        // update Playerpanel
-                                        PlayerInfoPanel currentPlayerPanel;
-                                        int currentPoints;
-
-                                        if(currentTurn == TeamColor.WHITE) {
-                                            playerWhitePoints += piece.getValue();
-                                            currentPoints = playerWhitePoints;
-                                            currentPlayerPanel = playerWhiteInfoPanel;
-                                        }
-                                        else {
-                                            playerBlackPoints += piece.getValue();
-                                            currentPoints = playerBlackPoints;
-                                            currentPlayerPanel = playerBlackInfoPanel;
-                                        }
-
-
-                                        currentPlayerPanel.updatePoints(currentPoints);
-                                        currentPlayerPanel.addCapturedPiece(new ImageIcon(piece.getImage()));
-                                        currentPlayerPanel.updateTurn(false);
                                     }
                                 }
 
@@ -145,31 +109,7 @@ public class ChessBoard extends JPanel {
                                 possibleMoves = null;
 
                                 currentTurn = currentTurn.getOpposite();
-
-                                if(isRunning){
-                                    if(currentTurn == TeamColor.WHITE){
-                                        playerWhiteInfoPanel.startClock();
-                                        playerBlackInfoPanel.pauseClock();
-                                        if(moveCount > 0)
-                                            playerBlackInfoPanel.applyIncrement();
-                                    }
-                                    else {
-                                        playerBlackInfoPanel.startClock();
-                                        playerWhiteInfoPanel.pauseClock();
-                                        if(moveCount > 0)
-                                            playerWhiteInfoPanel.applyIncrement();
-                                    }
-                                }
-
-
                                 moveCount++;
-                                // update Player Turn
-                                playerWhiteInfoPanel.updateTurn(currentTurn == TeamColor.WHITE);
-                                playerWhiteInfoPanel.updateClock();
-                                playerBlackInfoPanel.updateTurn(currentTurn == TeamColor.BLACK);
-                                playerBlackInfoPanel.updateClock();
-
-
                                 selectedPiece.movedTo(moveTo);
                             }
                             else {
@@ -219,7 +159,6 @@ public class ChessBoard extends JPanel {
     private void setDefaultBoard(ImageTheme theme, TeamColor bottomColor) {
         this.bottomColor = bottomColor;
 
-        // set upper side
         board[0][0] = new Rook(theme, bottomColor.getOpposite(), this);
         board[0][1] = new Knight(theme, bottomColor.getOpposite(), this);
         board[0][2] = new Bishop(theme, bottomColor.getOpposite(), this);
@@ -229,7 +168,6 @@ public class ChessBoard extends JPanel {
         board[0][6] = new Knight(theme, bottomColor.getOpposite(), this);
         board[0][7] = new Rook(theme, bottomColor.getOpposite(), this);
 
-        // Set the pawns
         board[1][0] = new Pawn(theme, bottomColor.getOpposite(), this);
         board[1][1] = new Pawn(theme, bottomColor.getOpposite(), this);
         board[1][2] = new Pawn(theme, bottomColor.getOpposite(), this);
@@ -240,7 +178,6 @@ public class ChessBoard extends JPanel {
         board[1][7] = new Pawn(theme, bottomColor.getOpposite(), this);
 
 
-        // set lower side
         board[7][0] = new Rook(theme, bottomColor, this);
         board[7][1] = new Knight(theme, bottomColor, this);
         board[7][2] = new Bishop(theme, bottomColor, this);
@@ -250,7 +187,6 @@ public class ChessBoard extends JPanel {
         board[7][6] = new Knight(theme, bottomColor, this);
         board[7][7] = new Rook(theme, bottomColor, this);
 
-        // Set the pawns
         board[6][0] = new Pawn(theme, bottomColor, this);
         board[6][1] = new Pawn(theme, bottomColor, this);
         board[6][2] = new Pawn(theme, bottomColor, this);
@@ -261,7 +197,6 @@ public class ChessBoard extends JPanel {
         board[6][7] = new Pawn(theme, bottomColor, this);
     }
 
-    // Method to refresh the board view
     private void updateBoard() {
         initializeBoard();
         validate();
@@ -273,22 +208,8 @@ public class ChessBoard extends JPanel {
         return board;
     }
 
-    public Location getSelectedPieceLocation() {
-        return selectedPieceLocation;
-    }
-
     public TeamColor getBottomColor() {
         return bottomColor;
-    }
-
-    public void setMoveHistoryModel(DefaultListModel<MoveHistoryEntry> moveHistoryModel) {
-        this.moveHistoryModel = moveHistoryModel;
-    }
-
-    public void addMoveToHistory(String description, ChessPiece piece) {
-        if(moveHistoryModel != null) {
-            this.moveHistoryModel.addElement(new MoveHistoryEntry(description, piece));
-        }
     }
 
     public void reloadAllPictures() {
@@ -302,10 +223,5 @@ public class ChessBoard extends JPanel {
             }
         }
         updateBoard();
-    }
-
-    public void setTheme(ImageTheme theme) {
-        this.theme = theme;
-        reloadAllPictures();
     }
 }
